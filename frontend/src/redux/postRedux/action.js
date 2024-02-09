@@ -3,6 +3,12 @@ import {
   ADDFAIL,
   ADDLOADING,
   ADDSUCESS,
+  DELETEFAIL,
+  DELETELOADING,
+  DELETESUCESS,
+  EDITFAIL,
+  EDITLOADING,
+  EDITSUCESS,
   POSTFAIL,
   POSTLOADING,
   POSTSUCESS,
@@ -27,22 +33,28 @@ export const getPost = (token) => async (dispatch) => {
 
 //Delete Product
 
-// export const deleteProduct = (id) => async (dispatch) => {
-//     try {
-//       dispatch({ type: DELETELOADING });
-//       let res = await axios.delete(
-//         `${process.env.REACT_APP_API_URL}/api/products/${id}`
-//       );
+export const deletePost = (id, token) => async (dispatch) => {
+  try {
+    dispatch({ type: DELETELOADING });
+    let res = await axios.delete(
+      `${process.env.REACT_APP_API_URL}/api/posts/${id}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
-//       dispatch({ type: DELETESUCESS, payload: id });
-//     } catch (err) {
-//       console.log(err);
-//       dispatch({ type: DELETEFAIL });
-//     }
-//   };
+    dispatch({ type: DELETESUCESS, payload: id });
+  } catch (err) {
+    console.log(err);
+    dispatch({ type: DELETEFAIL });
+  }
+};
 
 // add post
-export const addPost = (formData,token) => async (dispatch) => {
+export const addPost = (formData, token) => async (dispatch) => {
   try {
     dispatch({ type: ADDLOADING });
     let res = await axios.post(
@@ -63,18 +75,26 @@ export const addPost = (formData,token) => async (dispatch) => {
   }
 };
 
-// export const EditProduct = (id, formData, closeModal) => async (dispatch) => {
-//     try {
-//       dispatch({ type: EDITLOADING });
-//       let res = await axios.patch(
-//         `${process.env.REACT_APP_API_URL}/api/products/${id}`,
-//         formData
-//       );
-//       dispatch({ type: EDITSUCESS, payload: res.data.singleProduct });
-//       closeModal();
-//     } catch (error) {
-//       console.log(error);
-//       dispatch({ type: EDITFAIL });
-//       closeModal();
-//     }
-//   };
+export const EditPost =
+  (id, formData, token, closeModal) => async (dispatch) => {
+    try {
+      dispatch({ type: EDITLOADING });
+      let res = await axios.patch(
+        `${process.env.REACT_APP_API_URL}/api/posts/${id}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      dispatch({ type: EDITSUCESS, payload: res.data.singlePost });
+      alert("Edit post Sucessfully");
+      closeModal();
+    } catch (error) {
+      console.log(error);
+      dispatch({ type: EDITFAIL });
+      closeModal();
+    }
+  };

@@ -2,6 +2,12 @@ import {
   ADDFAIL,
   ADDLOADING,
   ADDSUCESS,
+  DELETEFAIL,
+  DELETELOADING,
+  DELETESUCESS,
+  EDITFAIL,
+  EDITLOADING,
+  EDITSUCESS,
   POSTFAIL,
   POSTLOADING,
   POSTSUCESS,
@@ -27,20 +33,20 @@ export const reducer = (state = initState, action) => {
 
     case POSTFAIL:
       return { ...state, isLoading: false, isError: true };
-    //   case DELETELOADING:
-    //     return { ...state, isLoading: true, isError: false };
-    //   case DELETEFAIL:
-    //     return { ...state, isLoading: false, isError: true };
-    //   case DELETESUCESS:
-    //     let prodsAfterDelete = [...state.products].filter(
-    //       (el) => el._id !== action.payload
-    //     );
-    //     return {
-    //       ...state,
-    //       isLoading: false,
-    //       isError: false,
-    //       products: prodsAfterDelete,
-    //     };
+    case DELETELOADING:
+      return { ...state, isLoading: true, isError: false };
+    case DELETEFAIL:
+      return { ...state, isLoading: false, isError: true };
+    case DELETESUCESS:
+      let postAfterDelete = [...state.post].filter(
+        (el) => el._id !== action.payload
+      );
+      return {
+        ...state,
+        isLoading: false,
+        isError: false,
+        post: postAfterDelete,
+      };
     case ADDLOADING:
       return { ...state, isLoading: true, isError: false };
     case ADDFAIL:
@@ -54,23 +60,23 @@ export const reducer = (state = initState, action) => {
         post: postAfterAdding,
       };
 
-    //   case EDITLOADING:
-    //     return { ...state, isLoading: true, isError: false };
-    //   case EDITFAIL:
-    //     return { ...state, isLoading: false, isError: true };
-    //   case EDITSUCESS:
-    //     let EditProduct = [...state.products].map((el) => {
-    //       if (el._id === action.payload._id) {
-    //         return action.payload;
-    //       }
-    //      return el
-    //     });
-    //     return {
-    //       ...state,
-    //       isLoading: false,
-    //       isError: false,
-    //       products: EditProduct,
-    //     };
+    case EDITLOADING:
+      return { ...state, isLoading: true, isError: false };
+    case EDITFAIL:
+      return { ...state, isLoading: false, isError: true };
+    case EDITSUCESS:
+      let EditPost = [...state.post].map((el) => {
+        if (el._id === action.payload._id) {
+          return action.payload;
+        }
+        return el;
+      });
+      return {
+        ...state,
+        isLoading: false,
+        isError: false,
+        post: EditPost,
+      };
 
     default:
       return { ...state };
