@@ -11,7 +11,7 @@ import {
 export const getPost = (token) => async (dispatch) => {
   try {
     dispatch({ type: POSTLOADING });
-    let res = await axios.get(`http://localhost:8080/api/posts`, {
+    let res = await axios.get(`${process.env.REACT_APP_API_URL}/api/posts`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
